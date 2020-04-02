@@ -3,6 +3,4 @@ export const EMAIL = {
     POGRESANE: 'dsafafdsfs@gmail.com',
     TACANP: 't3stiranje' ,
     POGRESANP: 'dfbdbdbdfbdfb',
-    PRAZANE: NaN ,
-    PRAZANP: NaN
 }  

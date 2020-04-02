@@ -1,13 +1,8 @@
-import { EMAIL } from "/Users/aleksandarmilenkovski/Projekti/GalApp/cypress/fixtures/kredencijali.js"
+/// <reference types="cypress" />
+import { EMAIL } from "../cypress/fixtures/kredencijali"
 export class Funkcije {
     logindugme() {
         cy.get('.nav-link').contains('Login').click()
-    }
-    validni() {
-        cy.get('#email').type(EMAIL.TACANM)
-        cy.get('#password').type(EMAIL.TACANP)
-        cy.contains('Submit').click()
-        cy.wait(5000)
     }
     provera() {
         cy.url().should('eq', 'https://gallery-app.vivifyideas.com/')
@@ -15,28 +10,55 @@ export class Funkcije {
         cy.get('.nav-link').contains('My Galleries').should('be.visible') 
         cy.get('.nav-link').contains('Create Gallery').should('be.visible') 
     }
-    prazanmail() {
-        cy.get('#email').type(EMAIL.TACANM).clear()
-        cy.get('#password').type(EMAIL.TACANP)
+    provera2() {
+        cy.url().should('eq', 'https://gallery-app.vivifyideas.com/login')
+        cy.get('.nav-link').contains('Login').should('be.visible') 
+        cy.get('.nav-link').contains('Register').should('be.visible')
+    }
+    provera3() {
+        cy.url().should('eq', 'https://gallery-app.vivifyideas.com/login')
+        cy.get('.nav-link').contains('Login').should('be.visible') 
+        cy.get('.nav-link').contains('Register').should('be.visible') 
+        cy.get('.alert-danger').contains('Bad Credentials').should('be.visible')
+    }
+    email() {
+        return cy.get('#email')
+    }
+    pass() {
+        return cy.get('#password')
+    }
+    loginipsravan() {
+        this.email().type(EMAIL.TACANM)
+        this.pass().type(EMAIL.TACANP)
         cy.contains('Submit').click()
         cy.wait(5000)
     }
-    prazanpass() {
-        cy.get('#email').type(EMAIL.TACANM)
-        cy.get('#password').type(EMAIL.TACANP).clear()
+    loginprazanmail() {
+        this.pass().type(EMAIL.TACANP)
+        cy.wait(5000)
+        cy.contains('Submit').click()
+        this.email().then(($input) => {
+             expect($input[0].validationMessage).to.eq('Please fill out this field.')
+             })
+    }
+    customlogin(email,password) {
+        this.email().type(email)
+        this.pass().type(password)
         cy.contains('Submit').click()
         cy.wait(5000)
     }
-    praznaoba() {
-        cy.get('#email').type(EMAIL.TACANM).clear()
-        cy.get('#password').type(EMAIL.TACANP).clear()
-        cy.contains('Submit').click()
+    loginprazanpass() {
+        this.email().type(EMAIL.TACANM)
         cy.wait(5000)
+        cy.contains('Submit').click()
+        this.pass().then(($input) => {
+            expect($input[0].validationMessage).to.eq('Please fill out this field.')
+            })
     }
-    pogresnikred() {
-        cy.get('#email').type(EMAIL.POGRESANE)
-        cy.get('#password').type(EMAIL.POGRESANP)
+    obaprazna() {
         cy.contains('Submit').click()
-        cy.wait(5000)
+        this.email().then(($input) => {
+             expect($input[0].validationMessage).to.eq('Please fill out this field.')
+             })
     }
 }
